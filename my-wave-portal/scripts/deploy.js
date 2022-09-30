@@ -1,25 +1,23 @@
 const main = async () => {
-    const [deployer] = await hre.ethers.getSigners();
-    const accountBalance = await deployer.getBalance();
+  //Aqui compilará nosso contrato => O Hardhat Runtime Environment, ou hre abreviado, é um objeto que contém todas as funcionalidades que o Hardhat expõe ao executar uma tarefa, teste ou script.
+  const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
+  //Cria uma rede local blockchain e toda vez que rodarmos ele limpa a rede
+  const waveContract = await waveContractFactory.deploy();
+  //Esperar até que nosso contrato seja oficialmente implantado em nosso blockchain local
+  await waveContract.deployed();
+  //waveContract.address é o nosso endereço de contrato implantado na rede
+  console.log("Contract addy:", waveContract.address);
   
-    console.log("Deploying contracts with account: ", deployer.address);
-    console.log("Account balance: ", accountBalance.toString());
-  
-    const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
-    const waveContract = await waveContractFactory.deploy();
-    await waveContract.deployed();
-  
-    console.log("WavePortal address: ", waveContract.address);
-  };
-  
-  const runMain = async () => {
-    try {
-      await main();
-      process.exit(0);
-    } catch (error) {
-      console.log(error);
-      process.exit(1);
-    }
-  };
-  
-  runMain();
+};
+
+const runMain = async () => {
+  try {
+    await main();
+    process.exit(0);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+
+runMain();
